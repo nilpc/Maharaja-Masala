@@ -1,0 +1,10 @@
+services:
+  web:
+    image: nilpc1999/maharaja-masala:latest
+    container_name: maharaja-masala
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
