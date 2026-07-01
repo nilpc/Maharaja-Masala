@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface PageHeroProps {
@@ -9,6 +10,12 @@ interface PageHeroProps {
 }
 
 export function PageHero({ label, title, highlight, description }: PageHeroProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+  }, []);
+
   return (
     <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden bg-white">
       <div className="absolute inset-0 opacity-[0.04]">
@@ -31,7 +38,7 @@ export function PageHero({ label, title, highlight, description }: PageHeroProps
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: isMobile ? 0.35 : 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="text-brand-saffron font-mono text-sm uppercase tracking-[0.2em] font-semibold">
             {label}
@@ -40,7 +47,7 @@ export function PageHero({ label, title, highlight, description }: PageHeroProps
             {title} <br />
             <span className="text-brand-saffron">{highlight}</span>
           </h1>
-          <p className="text-brand-charcoal/60 text-lg max-w-2xl mx-auto mt-6 font-body leading-relaxed">
+          <p className="text-brand-charcoal/60 text-base sm:text-lg max-w-2xl mx-auto mt-6 font-body leading-relaxed">
             {description}
           </p>
         </motion.div>

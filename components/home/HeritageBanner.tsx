@@ -39,14 +39,23 @@ export function HeritageBanner() {
               ))}
             </ul>
             <div className="mt-8">
-              <Button variant="light" size="md">
+              <Button variant="default" size="lg" className="bg-white text-brand-crimson hover:bg-white/90 shadow-lg shadow-black/10">
                 Learn Our Story
               </Button>
             </div>
           </AnimatedSection>
 
-          <AnimatedSection variant="fadeRight" className="hidden lg:block">
-            <div className="relative">
+          <AnimatedSection variant="fadeRight" className="lg:block">
+            <div className="lg:hidden flex items-center justify-start gap-4 mt-6">
+              <div className="w-14 h-14 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
+                <span className="text-xl font-display font-bold text-white/30">MM</span>
+              </div>
+              <div>
+                <p className="text-white/60 text-xs font-mono uppercase tracking-[0.25em]">Since 1950</p>
+                <p className="text-white/40 text-[11px] font-mono mt-0.5">Jaipur, Rajasthan</p>
+              </div>
+            </div>
+            <div className="hidden lg:block relative">
               <div className="aspect-square rounded-2xl bg-white/10 border border-white/20 overflow-hidden">
                 <div className="w-full h-full flex items-center justify-center p-12">
                   <div className="text-center">

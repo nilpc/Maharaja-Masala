@@ -7,12 +7,12 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
   const { count, ref } = useCounterAnimation({ end: value });
 
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-brand-saffron mb-1">
+    <div ref={ref} className="text-center group">
+      <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-1 bg-gradient-to-r from-brand-saffron via-brand-crimson to-brand-gold bg-clip-text text-transparent">
         {count.toLocaleString()}
-        <span className="text-brand-saffron">{suffix}</span>
+        <span className="bg-gradient-to-r from-brand-saffron to-brand-gold bg-clip-text text-transparent">{suffix}</span>
       </div>
-      <p className="text-brand-charcoal/60 text-sm sm:text-base font-body font-medium">
+      <p className="text-brand-charcoal/70 text-sm sm:text-base font-body font-medium group-hover:text-brand-charcoal transition-colors">
         {label}
       </p>
     </div>
@@ -21,7 +21,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 
 export function StatsBar() {
   return (
-    <section className="min-h-screen py-16 sm:py-20 bg-brand-warm-white border-y border-brand-gold/10 flex items-center">
+    <section className="py-16 sm:py-20 bg-gradient-to-b from-brand-warm-white to-brand-ivory border-y border-brand-gold/10">
       <div className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection variant="stagger">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">

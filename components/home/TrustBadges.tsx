@@ -12,7 +12,7 @@ const iconMap: Record<string, React.ElementType> = {
 
 export function TrustBadges() {
   return (
-    <section className="min-h-screen py-16 sm:py-20 bg-brand-warm-white border-y border-brand-gold/10 flex items-center">
+    <section className="py-16 sm:py-20 bg-brand-warm-white border-y border-brand-gold/10">
       <div className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection variant="fadeUp" className="text-center mb-12">
           <span className="text-brand-saffron font-mono text-sm uppercase tracking-[0.2em]">
@@ -31,10 +31,10 @@ export function TrustBadges() {
                 key={badge.label}
                 className="text-center group h-full flex flex-col"
               >
-                <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-saffron/5 flex items-center justify-center mb-4 group-hover:bg-brand-saffron/10 group-hover:scale-110 transition-all duration-300 shrink-0">
-                  <Icon className="w-8 h-8 text-brand-saffron" />
+                <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-brand-saffron/5 to-brand-gold/5 flex items-center justify-center mb-4 group-hover:from-brand-saffron/15 group-hover:to-brand-gold/15 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand-saffron/10 transition-all duration-300 shrink-0">
+                  <Icon className="w-8 h-8 text-brand-saffron group-hover:text-brand-gold transition-colors duration-300" />
                 </div>
-                <p className="text-sm font-body font-semibold text-brand-charcoal flex-1 flex items-center justify-center">
+                <p className="text-sm font-body font-semibold text-brand-charcoal group-hover:text-brand-saffron transition-colors duration-300 flex-1 flex items-center justify-center">
                   {badge.label}
                 </p>
               </div>

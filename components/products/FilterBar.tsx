@@ -18,11 +18,12 @@ export function FilterBar({ activeCategory, onCategoryChange }: FilterBarProps) 
               key={cat.id}
               onClick={() => onCategoryChange(cat.id)}
               whileTap={{ scale: 0.95 }}
+              layout
               className={cn(
-                'px-4 py-2 rounded-full text-sm font-body font-medium whitespace-nowrap transition-all duration-300',
+                'px-4 py-2.5 rounded-full text-sm font-body font-medium whitespace-nowrap transition-all duration-300',
                 activeCategory === cat.id
-                  ? 'bg-brand-saffron text-white shadow-md shadow-brand-saffron/20'
-                  : 'bg-brand-ivory text-brand-charcoal/60 hover:bg-brand-charcoal/5 border border-brand-gold/10'
+                  ? 'bg-gradient-to-r from-brand-saffron to-brand-crimson text-white shadow-md shadow-brand-saffron/25'
+                  : 'bg-brand-ivory text-brand-charcoal/60 hover:text-brand-charcoal hover:bg-brand-charcoal/5 border border-brand-gold/10 hover:border-brand-gold/30'
               )}
             >
               {cat.label}

@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 
@@ -36,6 +37,14 @@ const timeline = [
 ];
 
 export function BrandTimeline() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+  }, []);
+
+  const staggerDelay = isMobile ? 0.05 : 0.1;
+
   return (
     <section className="min-h-screen py-20 sm:py-28 bg-brand-warm-white flex items-center">
       <div className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,7 +61,7 @@ export function BrandTimeline() {
           <div className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-saffron via-brand-gold to-brand-saffron/20 -translate-x-1/2" />
 
           {timeline.map((item, i) => (
-            <AnimatedSection key={item.year} variant="fadeUp" delay={i * 0.1}>
+            <AnimatedSection key={item.year} variant="fadeUp" delay={i * staggerDelay}>
               <motion.div
                 className={`relative flex items-start gap-6 sm:gap-12 mb-12 sm:mb-16 ${
                   i % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'

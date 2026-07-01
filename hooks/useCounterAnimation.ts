@@ -18,6 +18,7 @@ export function useCounterAnimation({ end, duration = 2000 }: UseCounterAnimatio
     started.current = true;
 
     const startTime = performance.now();
+    let rafId: number;
 
     function animate(currentTime: number) {
       const elapsed = currentTime - startTime;
@@ -26,11 +27,13 @@ export function useCounterAnimation({ end, duration = 2000 }: UseCounterAnimatio
       setCount(Math.floor(eased * end));
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        rafId = requestAnimationFrame(animate);
       }
     }
 
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(rafId);
   }, [inView, end, duration]);
 
   return { count, ref };

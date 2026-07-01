@@ -1,9 +1,48 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SITE_TAGLINE } from '@/lib/constants';
+import { cn } from '@/lib/utils';
+
+function FloatingOrbs() {
+  const prefersReducedMotion = useRef(false);
+  useEffect(() => {
+    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  if (prefersReducedMotion.current) {
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-brand-gold/10 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-brand-saffron/10 blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 w-64 h-64 rounded-full bg-brand-gold/5 blur-3xl" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <motion.div
+        className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-brand-gold/10 blur-3xl"
+        animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+        transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-brand-saffron/10 blur-3xl"
+        animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
+        transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute top-1/3 left-1/2 w-64 h-64 rounded-full bg-brand-gold/5 blur-3xl"
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+      />
+    </div>
+  );
+}
 
 function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,15 +54,11 @@ function ParticleCanvas() {
     if (!ctx) return;
 
     const isMobile = window.innerWidth < 640;
-    const particleCount = isMobile ? 25 : 60;
+    const particleCount = isMobile ? 30 : 80;
     const particles: {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-      color: string;
+      x: number; y: number; size: number;
+      speedX: number; speedY: number;
+      opacity: number; color: string;
     }[] = [];
 
     function resize() {
@@ -34,22 +69,21 @@ function ParticleCanvas() {
     resize();
     window.addEventListener('resize', resize);
 
-    const colors = ['#CC0000', '#CC0000', '#C9A84C', '#CC0000'];
+    const colors = ['#C9A84C', '#FFFFFF', '#C9A84C', '#FFFFFF'];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
-        speedX: (Math.random() - 0.5) * 0.2,
-        speedY: -Math.random() * 0.3 - 0.05,
-        opacity: Math.random() * 0.15 + 0.05,
+        size: Math.random() * 2.5 + 0.5,
+        speedX: (Math.random() - 0.5) * 0.15,
+        speedY: -Math.random() * 0.25 - 0.03,
+        opacity: Math.random() * 0.2 + 0.05,
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
 
     let animId: number;
-
     function animate() {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -92,51 +126,91 @@ function ParticleCanvas() {
   );
 }
 
-export function HeroSection() {
+function DecorativeLine({ className }: { className?: string }) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
-      <div className="absolute inset-0 opacity-[0.06]">
+    <div className={cn("flex items-center gap-3", className)}>
+      <span className="h-px w-12 bg-gradient-to-r from-transparent to-brand-gold/40" />
+      <span className="h-px w-8 bg-brand-gold/60" />
+      <span className="h-px w-12 bg-gradient-to-l from-transparent to-brand-gold/40" />
+    </div>
+  );
+}
+
+export function HeroSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+  }, []);
+
+  const enterDur = isMobile ? 0.35 : 0.6;
+  const scrollDelay = isMobile ? 0.5 : 0.8;
+  const badgeDelay = isMobile ? 0.1 : 0.2;
+
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-brand-crimson via-brand-saffron/95 to-brand-crimson">
+      <div className="absolute inset-0 opacity-[0.04]">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 15% 30%, #CC0000 0.5px, transparent 0.5px),
-                            radial-gradient(circle at 45% 15%, #CC0000 0.7px, transparent 0.7px),
-                            radial-gradient(circle at 70% 85%, #CC0000 0.4px, transparent 0.4px),
-                            radial-gradient(circle at 85% 40%, #C9A84C 0.6px, transparent 0.6px),
-                            radial-gradient(circle at 8% 65%, #CC0000 0.5px, transparent 0.5px),
-                            radial-gradient(circle at 55% 50%, #C9A84C 0.3px, transparent 0.3px),
-                            radial-gradient(circle at 75% 55%, #CC0000 0.8px, transparent 0.8px),
-                            radial-gradient(circle at 95% 10%, #CC0000 0.4px, transparent 0.4px),
-                            radial-gradient(circle at 25% 90%, #C9A84C 0.5px, transparent 0.5px),
-                            radial-gradient(circle at 40% 5%, #CC0000 0.6px, transparent 0.6px),
-                            radial-gradient(circle at 60% 30%, #CC0000 0.3px, transparent 0.3px),
-                            radial-gradient(circle at 5% 45%, #CC0000 0.7px, transparent 0.7px)`,
-          backgroundSize: '180px 180px',
+          backgroundImage: `radial-gradient(circle at 20% 50%, white 0.5px, transparent 0.5px),
+                            radial-gradient(circle at 80% 20%, white 0.3px, transparent 0.3px),
+                            radial-gradient(circle at 50% 80%, white 0.4px, transparent 0.4px)`,
+          backgroundSize: '40px 40px',
         }} />
       </div>
+
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08)_0%,transparent_70%)]" />
+
+      <FloatingOrbs />
       <ParticleCanvas />
 
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: enterDur, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="inline-block text-brand-saffron font-mono text-sm uppercase tracking-[0.2em] font-semibold mb-6">
-            Since 1950
-          </span>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold text-brand-charcoal leading-tight mb-6 text-balance">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: isMobile ? 0.3 : 0.5, delay: badgeDelay }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-gold/20 bg-white/5 backdrop-blur-sm mb-8"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-brand-gold" />
+            <span className="text-brand-gold font-mono text-xs uppercase tracking-[0.25em] font-semibold">
+              Since 1950
+            </span>
+          </motion.div>
+
+          <DecorativeLine className="justify-center mb-6" />
+
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white leading-tight mb-6 text-balance">
             {SITE_TAGLINE}
           </h1>
-          <p className="text-brand-charcoal/50 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 font-body leading-relaxed">
+
+          <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 font-body leading-relaxed">
             Handpicked spices and artisanal masala blends from the heart of India.
             Pure, authentic, and crafted with centuries-old traditions.
           </p>
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="primary" size="lg">
-              Explore Products
-            </Button>
-            <Button variant="outline" size="lg">
-              Our Story
-            </Button>
+            <Link href="/products">
+              <Button
+                variant="default"
+                size="lg"
+                className="bg-white text-brand-crimson hover:bg-white/90 shadow-lg shadow-black/10 px-8 h-12 text-base font-semibold"
+              >
+                Explore Products
+              </Button>
+            </Link>
+            <Link href="/about">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-brand-gold/50 text-white hover:bg-brand-gold/10 hover:text-white hover:border-brand-gold px-8 h-12 text-base backdrop-blur-sm bg-white/5"
+              >
+                Our Story
+              </Button>
+            </Link>
           </div>
         </motion.div>
       </div>
@@ -144,15 +218,15 @@ export function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
+        transition={{ delay: scrollDelay, duration: isMobile ? 0.4 : 0.6 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-        >
-          <ArrowDown className="w-6 h-6 text-brand-charcoal/20" />
-        </motion.div>
+        <div className="flex flex-col items-center gap-2 motion-safe:animate-bounce">
+          <span className="text-white/50 text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em]">
+            Scroll
+          </span>
+          <ArrowDown className="w-4 h-4 text-white/50" />
+        </div>
       </motion.div>
     </section>
   );

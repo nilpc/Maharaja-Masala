@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
@@ -35,7 +36,7 @@ const variants: Record<AnimationVariant, Variants> = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08 },
+      transition: { staggerChildren: 0.06 },
     },
   },
 };
@@ -49,16 +50,36 @@ export function AnimatedSection({
   as: Tag = 'div',
 }: AnimatedSectionProps) {
   const { ref, controls } = useScrollReveal({ threshold });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+  }, []);
+
+  const duration = isMobile ? 0.35 : 0.5;
+  const staggerSpeed = isMobile ? 0.04 : 0.06;
+  const finalDelay = isMobile ? Math.min(delay, 0.15) : delay;
+
+  const effectiveVariants: Record<AnimationVariant, Variants> = {
+    ...variants,
+    stagger: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { staggerChildren: staggerSpeed },
+      },
+    },
+  };
 
   return (
     <motion.div
       ref={ref}
       animate={controls}
       initial="hidden"
-      variants={variants[variant]}
+      variants={effectiveVariants[variant]}
       transition={{
-        duration: 0.6,
-        delay,
+        duration: variant === 'stagger' ? undefined : duration,
+        delay: variant === 'stagger' ? undefined : finalDelay,
         ease: [0.22, 1, 0.36, 1],
       }}
       className={cn(className)}

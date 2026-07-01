@@ -7,18 +7,23 @@ import { testimonials } from '@/data/testimonials';
 
 export function Testimonials() {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    if (paused) return;
     const timer = setInterval(() => {
       setActive((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [paused]);
 
   const t = testimonials[active];
 
   return (
-    <section className="min-h-screen py-16 sm:py-20 bg-brand-ivory flex items-center">
+    <section className="py-16 sm:py-20 bg-brand-ivory">
       <div className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection variant="fadeUp" className="text-center mb-12">
           <span className="text-brand-saffron font-mono text-sm uppercase tracking-[0.2em]">
@@ -29,7 +34,11 @@ export function Testimonials() {
           </h2>
         </AnimatedSection>
 
-        <div className="max-w-2xl mx-auto">
+        <div
+          className="max-w-2xl mx-auto"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -39,37 +48,42 @@ export function Testimonials() {
               transition={{ duration: 0.4 }}
               className="text-center"
             >
-              <Quote className="w-10 h-10 text-brand-saffron/30 mx-auto mb-6" />
-              <p className="text-lg sm:text-xl text-brand-charcoal/80 leading-relaxed font-body italic mb-6">
-                &ldquo;{t.quote}&rdquo;
-              </p>
+              <Quote className="w-10 h-10 text-brand-gold/30 mx-auto mb-6" />
+              <div className="relative overflow-hidden px-4">
+                <span className="absolute left-1 top-0 text-4xl text-brand-gold/20 font-display leading-none -translate-y-1">&ldquo;</span>
+                <p className="text-lg sm:text-xl text-brand-charcoal leading-relaxed font-body italic mb-6">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+              </div>
               <div className="flex items-center justify-center gap-1 mb-4">
                 {Array.from({ length: t.rating }).map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-brand-gold text-brand-gold" />
                 ))}
               </div>
-              <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-brand-saffron/20 to-brand-gold/20 flex items-center justify-center mb-2">
-                <span className="text-sm font-display font-bold text-brand-saffron">
+              <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-brand-saffron to-brand-crimson flex items-center justify-center mb-2 shadow-md shadow-brand-saffron/20">
+                <span className="text-sm font-display font-bold text-white">
                   {t.name.charAt(0)}
                 </span>
               </div>
               <p className="font-display font-semibold text-brand-charcoal">{t.name}</p>
-              <p className="text-sm text-brand-charcoal/50">{t.role}</p>
+              <p className="text-sm text-brand-charcoal/70">{t.role}</p>
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex items-center justify-center gap-2 mt-8">
+          <div className="flex items-center justify-center gap-0 mt-8">
             {testimonials.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                  i === active
-                    ? 'bg-brand-saffron w-8'
-                    : 'bg-brand-charcoal/20 hover:bg-brand-charcoal/30'
-                }`}
+                className="p-3 flex items-center justify-center"
                 aria-label={`Go to testimonial ${i + 1}`}
-              />
+              >
+                <span className={`block rounded-full transition-all duration-300 ${
+                  i === active
+                    ? 'bg-brand-saffron w-8 h-2.5'
+                    : 'bg-brand-charcoal/20 hover:bg-brand-charcoal/30 w-2.5 h-2.5'
+                }`} />
+              </button>
             ))}
           </div>
         </div>

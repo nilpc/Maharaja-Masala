@@ -40,8 +40,12 @@ export function ProductsPageContent() {
         onCategoryChange={handleCategoryChange}
       />
 
-      <section className="min-h-screen py-12 sm:py-16 bg-brand-ivory flex items-center">
-        <div className="w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-12 sm:py-16 bg-gradient-to-b from-brand-warm-white via-brand-ivory to-brand-ivory">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <div className="absolute top-1/3 -left-20 w-72 h-72 rounded-full bg-brand-saffron/3 blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-brand-gold/4 blur-3xl" />
+        </div>
+        <div className="relative w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8">
           <ProductGrid products={filteredProducts} />
         </div>
       </section>

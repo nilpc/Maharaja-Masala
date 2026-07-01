@@ -4,14 +4,56 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
 
-:root {
-  --brand-saffron: #CC0000;
-  --brand-crimson: #8B0000;
-  --brand-gold: #C9A84C;
-  --brand-ivory: #F7F5F0;
-  --brand-charcoal: #1C1C1C;
-  --brand-warm-white: #FFFFFF;
-  --brand-olive: #991111;
+@layer utilities {
+  .bg-spice-dots {
+    background-image: radial-gradient(circle at 30% 40%, #C9A84C 0.5px, transparent 0.5px),
+                      radial-gradient(circle at 70% 60%, #CC0000 0.4px, transparent 0.4px),
+                      radial-gradient(circle at 50% 80%, #C9A84C 0.3px, transparent 0.3px);
+    background-size: 24px 24px, 18px 18px, 14px 14px;
+  }
+  .bg-spice-dots-sm {
+    background-image: radial-gradient(circle at 30% 40%, #C9A84C 0.5px, transparent 0.5px),
+                      radial-gradient(circle at 70% 60%, #CC0000 0.3px, transparent 0.3px);
+    background-size: 20px 20px, 14px 14px;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  :root {
+    --background: #F7F5F0;
+    --foreground: #1C1C1C;
+    --card: #FFFFFF;
+    --card-foreground: #1C1C1C;
+    --popover: #FFFFFF;
+    --popover-foreground: #1C1C1C;
+    --primary: #CC0000;
+    --primary-foreground: #FFFFFF;
+    --secondary: #F7F5F0;
+    --secondary-foreground: #1C1C1C;
+    --muted: #F7F5F0;
+    --muted-foreground: #666666;
+    --accent: #C9A84C;
+    --accent-foreground: #1C1C1C;
+    --destructive: #CC0000;
+    --border: #E5DCC8;
+    --input: #E5DCC8;
+    --ring: #CC0000;
+    --radius: 0.75rem;
+    --brand-saffron: #CC0000;
+    --brand-crimson: #8B0000;
+    --brand-gold: #C9A84C;
+    --brand-ivory: #F7F5F0;
+    --brand-charcoal: #1C1C1C;
+    --brand-warm-white: #FFFFFF;
+    --brand-olive: #991111;
+  }
 }
 
 * {

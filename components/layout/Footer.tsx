@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, Phone, MapPin, Instagram, Facebook, Youtube, Send } from 'lucide-react';
 import { SITE_NAME, CONTACT, SOCIAL, NAV_LINKS } from '@/lib/constants';
@@ -12,6 +13,14 @@ const socialLinks = [
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+
+  function handleNewsletterSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    // TODO: integrate with newsletter API
+    setEmail('');
+  }
 
   return (
     <footer className="bg-gradient-to-b from-brand-saffron via-brand-saffron to-brand-crimson text-white">
@@ -31,7 +40,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                   className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="w-4 h-4" />
@@ -90,17 +99,24 @@ export function Footer() {
               Subscribe for recipes, offers, and spice stories.
             </p>
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleNewsletterSubmit}
               className="flex flex-col sm:flex-row gap-2"
             >
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address for newsletter
+              </label>
               <input
+                id="newsletter-email"
                 type="email"
+                required
                 placeholder="Your email"
-                className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-white/60 transition-colors"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-white/60 transition-colors"
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-white text-brand-saffron text-sm font-medium rounded-lg hover:bg-white/90 transition-colors"
+                className="px-5 py-3 bg-white text-brand-saffron text-sm font-medium rounded-lg hover:bg-white/90 transition-colors"
               >
                 Join
               </button>
@@ -108,7 +124,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/70">
           <p>&copy; {year} {SITE_NAME}. All rights reserved.</p>
           <p>Crafted with care in India</p>
         </div>

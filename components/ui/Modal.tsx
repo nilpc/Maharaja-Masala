@@ -58,7 +58,7 @@ export function Modal({ open, onClose, children, className }: ModalProps) {
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full bg-brand-charcoal/5 hover:bg-brand-charcoal/10 transition-colors z-10"
+              className="absolute top-4 right-4 p-3 rounded-full bg-brand-charcoal/5 hover:bg-brand-charcoal/10 transition-colors z-10"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
